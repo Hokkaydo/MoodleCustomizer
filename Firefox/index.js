@@ -1,21 +1,33 @@
-if (document.URL.includes("moodle") && location.hostname !== 'moodle') {
-    var keepAliveIntervalId = runKeepAlive();
-    browser.runtime.onMessage.addListener(message => {
-        if(message.command === "toggle") {
-            if(message.feature === "keepAlive") {
-                if(keepAliveIntervalId !== -1) {
-                    clearInterval(keepAliveIntervalId);
-                    keepAliveIntervalId = -1;
-                }else {
-                    keepAliveIntervalId = runKeepAlive();
-                }
-            }
+var keepAliveIntervalId;
+var keepAliveEnabled = localStorage.getItem("keepAlive") === 'true';
+var moodleURLBase = ''
+
+browser.storage.local.onChanged.addListener(changes => {
+    if (changes.keepAlive) {
+        keepAliveEnabled = changes.keepAlive.newValue;
+        if (keepAliveEnabled) {
+            runKeepAlive();
+        } else {
+            clearInterval(keepAliveIntervalId);
         }
-    });
+        localStorage.setItem("keepAlive", keepAliveEnabled);
+    }
+});
+
+if (document.URL.includes("moodle") && location.hostname !== 'moodle') {
+    moodleURLBase = location.origin;
+    if (keepAliveEnabled) {
+        runKeepAlive();
+    }
 }
 
 function runKeepAlive() {
-    return setInterval(() => {
+    wrappedJSObject.console.log("ran")
+    if(moodleURLBase === '') {
+        return;
+    }
+    clearInterval(keepAliveIntervalId);
+    keepAliveIntervalId = setInterval(() => {
         const fetchOptions =
         {
             method: 'POST',
@@ -24,14 +36,14 @@ function runKeepAlive() {
             },
             body: '[{"index":0,"methodname":"core_session_touch","args":{}}]'
         }
-        fetch("https://moodle.uclouvain.be/lib/ajax/service.php?sesskey=" + wrappedJSObject.M.cfg.sesskey, fetchOptions)
+        fetch(moodleURLBase + "/lib/ajax/service.php?sesskey=" + wrappedJSObject.M.cfg.sesskey, fetchOptions)
             .then(body => body.json())
             .then(body => {
                 body = body[0];
                 if (body.error) {
                     const err = body.exception;
                     console.error("An error occured while trying to keep Moodle session alive : " + err.message + "\n Error code : " + err.errorcode);
-                } 
+                }
             });
-    }, 1*60*60*1000);
+    }, 1 * 60 * 60 * 1000);
 }
