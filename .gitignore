@@ -1,2 +1,4 @@
 */web-ext-artifacts/*
 */node_modules/*
+Chrome.crx
+Chrome.pem
