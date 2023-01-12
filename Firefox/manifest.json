@@ -1,0 +1,33 @@
+{
+    "name": "MoodleCustomizer",
+    "version": "1.1.0",
+    "manifest_version": 2,
+    "author": "Hokkaydo",
+    "permissions": [
+        "activeTab"
+    ],
+    "host_permissions": [
+        "https://moodle.uclouvain.be/"
+    ],
+    "description": "Improve Moodle global experience.",
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*/*"
+            ],
+            "js": [
+                "index.js"
+            ]
+        }
+    ],
+    "browser_action": {
+        "default_icon": {
+            "48": "icons/logo.png"
+        },
+        "default_title": "On/Off",
+        "default_popup": "popup/options.html"
+    },
+    "icons": {
+        "48": "icons/logo.png"
+    }
+}
