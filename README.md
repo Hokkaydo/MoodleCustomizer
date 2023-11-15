@@ -25,6 +25,8 @@ All features can be enabled or disabled by clicking on the addon icon in the top
 Currently supported features are : 
 - **KeepAlive**\
     This prevents Moodle from disconnecting your session while you're working and studying and long PDF or whatever else.
+- **PDF Previews**\
+    This prevents Moodle to force you to download pdfs, and will always preview then in your browser.
 
 ## Contribution
 Feel free to contribute using the [Pull Request](https://github.com/Hokkaydo/MoodleCustomizer/pulls) system. \
