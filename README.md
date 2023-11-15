@@ -5,7 +5,7 @@ Improve your Moodle experience.
 ### Firefox
 - Go to [MoodleCustomizer](https://addons.mozilla.org/addon/moodlecustomizer)'s add-on page and install it from there.\
 - You can also choose to use install it by yourself. \
-    1. Download [the latest firefox zip archive](https://github.com/Hokkaydo/MoodleCustomizer/blob/master/Firefox/moodlecustomizer-1.1.1.zip). 
+    1. Download [the latest firefox zip archive](https://github.com/Hokkaydo/MoodleCustomizer/blob/master/Firefox/moodlecustomizer-1.1.2.zip). 
     2. Once done, go to your extensions tab click on the settings icon in the top right corner.
     3. Select "Install module from a file"
     4. Go to your download location and selected the previously downloaded archive
