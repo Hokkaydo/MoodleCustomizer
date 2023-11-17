@@ -15,4 +15,5 @@ for (input of document.getElementsByTagName("input")) {
     })
 }
 
+browser.storage.local.set(settings) //Setting defaults if there are not.
 
