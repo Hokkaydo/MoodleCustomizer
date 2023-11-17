@@ -1,5 +1,5 @@
 var keepAliveIntervalId;
-var keepAliveEnabled = localStorage.getItem("keepAlive") === 'true';
+var keepAliveEnabled = localStorage.getItem("keepAlive") !== 'false'; // not === true to avoid disabled by default.
 var moodleURLBase = ''
 
 browser.storage.local.onChanged.addListener(changes => {
