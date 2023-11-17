@@ -8,6 +8,7 @@ browser.storage.local.onChanged.addListener(changes => {
         if (keepAliveEnabled) {
             runKeepAlive();
         } else {
+            console.log("clear")
             clearInterval(keepAliveIntervalId);
         }
         localStorage.setItem("keepAlive", keepAliveEnabled);
