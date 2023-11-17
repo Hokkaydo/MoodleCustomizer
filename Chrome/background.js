@@ -9,3 +9,29 @@ chrome.runtime.onInstalled.addListener(async () => {
 		}
 	}
 });
+
+chrome.storage.local.onChanged.addListener(async (chan) => {
+	if (chan.avoidPdfDownload) {
+		let enabled = chan.avoidPdfDownload.newValue;
+		await chrome.declarativeNetRequest.updateStaticRules({
+				disableRuleIds: enabled ? [] : [1],
+				enableRuleIds: enabled ? [1] : [],
+				rulesetId: "ruleset_1"
+		})
+		console.log("updated")
+	}
+})
+
+async function pdfSetup() {
+	let storage = await chrome.storage.local.get('avoidPdfDownload');
+	if (Object.keys(storage).includes("avoidPdfDownload") && !storage.avoidPdfDownload) { //If avoidPdfDownload is not in keys -> default setting -> should not disable.
+		console.log("Disabling pdfDownload because of settings.")
+		await chrome.declarativeNetRequest.updateStaticRules({
+				disableRuleIds: [1],
+				enableRuleIds: [],
+				rulesetId: "ruleset_1"
+		})
+	}
+}
+
+pdfSetup();
