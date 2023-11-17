@@ -1,37 +1,45 @@
 {
-    "name": "MoodleCustomizer",
-    "version": "1.1.1",
-    "manifest_version": 2,
-    "browser_specific_settings": {
-        "gecko": {
-            "id": "{34ba4e89-9b36-487b-8866-a27b304f3db6}"
-        }
-    },
-    "author": "Hokkaydo",
-    "permissions": [
-        "activeTab",
-        "storage",
-        "*://*/*"
-    ],
-    "description": "Improve Moodle global experience.",
-    "content_scripts": [
-        {
-            "matches": [
-                "*://*/*"
-            ],
-            "js": [
-                "index.js"
-            ]
-        }
-    ],
-    "browser_action": {
-        "default_icon": {
-            "48": "icons/logo.png"
-        },
-        "default_title": "On/Off",
-        "default_popup": "popup/options.html"
-    },
-    "icons": {
-        "48": "icons/logo.png"
+  "name": "MoodleCustomizer",
+  "version": "1.1.2",
+  "manifest_version": 2,
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{34ba4e89-9b36-487b-8866-a27b304f3db6}"
     }
+  },
+  "author": "Hokkaydo",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "*://*/*"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "description": "Improve Moodle global experience.",
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "js": [
+        "index.js"
+      ]
+    }
+  ],
+  "browser_action": {
+    "default_icon": {
+      "48": "icons/logo.png"
+    },
+    "default_title": "On/Off",
+    "default_popup": "popup/options.html"
+  },
+  "icons": {
+    "48": "icons/logo.png"
+  }
 }
