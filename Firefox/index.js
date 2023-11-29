@@ -23,8 +23,6 @@ if (document.URL.includes("moodle") && location.hostname !== 'moodle') {
 }
 
 
-
-
 function runKeepAlive() {
     wrappedJSObject.console.log("ran")
     if(moodleURLBase === '') {
