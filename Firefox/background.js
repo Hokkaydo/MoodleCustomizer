@@ -28,9 +28,8 @@ browser.webRequest.onBeforeRequest.addListener(
 )
 
 async function hook_recap(filter, url, event) {
-    let anotherUrl = url.replace("recap.php","");
-    let response = await fetch(anotherUrl);
+    let baseMoodle = url.replace("recap.php","");
+    let response = await fetch(baseMoodle);
     filter.write(new TextEncoder().encode(await response.text()));
-    filter.statusCode = 500
     filter.disconnect();
 }
