@@ -81,6 +81,7 @@ function addRecapToNavbar() {
 
 async function recapContent() {
     if (document.location.href.includes("recap.php")) {
+        document.title = "Recap"
         const htmlFileURL = browser.extension.getURL('recap/main.html');
         const scriptFileUrl = browser.extension.getURL('recap/recap.js');
         let data = await fetch(htmlFileURL);
