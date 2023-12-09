@@ -1,5 +1,5 @@
 var keepAliveIntervalId;
-var keepAliveEnabled = localStorage.getItem("keepAlive") === 'true';
+var keepAliveEnabled = localStorage.getItem("keepAlive") !== 'false';
 var sesskey = '';
 var moodleURLBase = ''
 
@@ -9,6 +9,7 @@ chrome.storage.onChanged.addListener((changes, area) => {
         if (keepAliveEnabled) {
             runKeepAlive();
         } else {
+            console.log("clear")
             clearInterval(keepAliveIntervalId);
         }
         localStorage.setItem("keepAlive", keepAliveEnabled);
@@ -50,6 +51,7 @@ function setupSesskey(callback) {
 }
 
 function runKeepAlive() {
+    console.log("ran")
     if(moodleURLBase === '') {
         return;
     }

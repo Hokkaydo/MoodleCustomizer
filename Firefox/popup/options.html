@@ -1,16 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="options.css">
-    <title>Document</title>
-</head>
-<body>
-    <div class="list">
 
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="options.css">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <h3>Settings:</h3>
+  <div id="form">
+    <div class="control">
+      <p>Keep Alive:</p>
+      <input data-item="keepAlive" type="checkbox" />
     </div>
-    <script src="options.js"></script>
+    <div class="control">
+      <p>Avoid PDF downloads:</p>
+      <input data-item="avoidPdfDownload" type="checkbox" />
+    </div>
+  </div>
+
+  <script src="options.js"></script>
 </body>
+
 </html>

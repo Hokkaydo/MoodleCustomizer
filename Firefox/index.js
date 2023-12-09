@@ -1,5 +1,5 @@
 var keepAliveIntervalId;
-var keepAliveEnabled = localStorage.getItem("keepAlive") === 'true';
+var keepAliveEnabled = localStorage.getItem("keepAlive") !== 'false'; // not === true to avoid disabled by default.
 var moodleURLBase = ''
 
 browser.storage.local.onChanged.addListener(changes => {
@@ -8,6 +8,7 @@ browser.storage.local.onChanged.addListener(changes => {
         if (keepAliveEnabled) {
             runKeepAlive();
         } else {
+            console.log("clear")
             clearInterval(keepAliveIntervalId);
         }
         localStorage.setItem("keepAlive", keepAliveEnabled);
@@ -20,6 +21,9 @@ if (document.URL.includes("moodle") && location.hostname !== 'moodle') {
         runKeepAlive();
     }
 }
+
+
+
 
 function runKeepAlive() {
     wrappedJSObject.console.log("ran")
