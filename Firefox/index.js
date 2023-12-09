@@ -55,6 +55,13 @@ function runKeepAlive() {
 
 function addRecapToNavbar() {
     let menu = document.querySelectorAll('[role="menubar"]')[0];
+    //Prevent multiple recap due to web-ext hot reload.
+    for (let it of menu.children) {
+        if (it.children[0].innerText === "Recap") {
+            return;
+        }
+    }
+
     let home = menu.children[0];
     menu.removeChild(home);
     let item = menu.children[0].cloneNode(true);
@@ -72,4 +79,18 @@ function addRecapToNavbar() {
     menu.prepend(home);
 }
 
+async function recapContent() {
+    if (document.location.href.includes("recap.php")) {
+        const htmlFileURL = browser.extension.getURL('recap/main.html');
+        const scriptFileUrl = browser.extension.getURL('recap/recap.js');
+        let data = await fetch(htmlFileURL);
+        let scriptContent = await fetch(scriptFileUrl);
+        let main = document.querySelectorAll('[role="main"]')[0];
+        main.innerHTML = await data.text();
+        eval(await scriptContent.text());
+
+    }
+}
+
+recapContent();
 addRecapToNavbar();
