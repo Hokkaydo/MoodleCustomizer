@@ -51,3 +51,25 @@ function runKeepAlive() {
             });
     }, 1 * 60 * 60 * 1000);
 }
+
+
+function addRecapToNavbar() {
+    let menu = document.querySelectorAll('[role="menubar"]')[0];
+    let home = menu.children[0];
+    menu.removeChild(home);
+    let item = menu.children[0].cloneNode(true);
+    item.children[0].innerText = "Recap"
+    item.children[0].href = "/my/recap.php"
+    item.children[0].className = item.children[0].className.replace("active","")
+    if (document.location.href.includes("recap.php")) {
+        item.children[0].className += " active"
+        for (let it of menu.children) {
+
+            it.children[0].className = it.children[0].className.replace("active","")
+        }
+    }
+    menu.prepend(item);
+    menu.prepend(home);
+}
+
+addRecapToNavbar();
