@@ -1,13 +1,12 @@
 {
   "manifest_version": 3,
   "name": "MoodleCustomizer",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "author": "Hokkaydo",
   "description": "Improve Moodle global experience.",
   "permissions": [
     "storage",
     "webRequest",
-    "webRequestBlocking",
     "scripting",
     "tabs",
     "activeTab"
@@ -16,14 +15,13 @@
     "*://*/*"
   ],  
   "background": {
-    "scripts": ["background.js"]
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
       "run_at": "document_start",
       "matches": ["*://*/*"],
       "js": ["index.js"],
-      "css": ["style.css"]
     }
   ],
   "action": {
