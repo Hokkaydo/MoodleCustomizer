@@ -21,7 +21,7 @@
     {
       "run_at": "document_start",
       "matches": ["*://*/*"],
-      "js": ["index.js"],
+      "js": ["index.js"]
     }
   ],
   "action": {
