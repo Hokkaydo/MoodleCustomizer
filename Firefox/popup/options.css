@@ -4,17 +4,35 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #1F1F1F;
+    color: #fff;
 }
-
-
 
 .control {
     display: flex;
     align-items: center;
+    justify-content: space-between
 }
 .control > p {
     margin-right: 10px;
     
+}
+
+@font-face {
+    font-family: 'Geologica';
+    src: url('fonts/static/Geologica-Regular.ttf') format('truetype'),
+         url('fonts/static/Geologica-Bold.ttf') format('truetype');
+}
+
+
+h3 {
+    font-family: 'Geologica', sans-serif;
+    font-weight: bold;
+}
+
+p {
+    font-family: 'Geologica', sans-serif;
+    font-weight: normal; /* Assuming Geologica-Regular is normal weight */
 }
 
 input[type="checkbox"] {
