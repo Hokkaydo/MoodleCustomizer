@@ -101,7 +101,7 @@ async function bulkDownload() {
     let allOfThem = confirm("Do you want to download all of them ? ");
     
     //if we download of all of them, skip download popup
-    let currentItem = allOfThem ? links.length + 5 : links.length + 5;
+    let currentItem = allOfThem ? links.length : 0;
 
     //Utils functions
     const stripName = (name) => name.replace("\nFichier","");
