@@ -52,6 +52,14 @@ function runKeepAlive() {
     }, 1 * 60 * 60 * 1000);
 }
 
+function download(dataurl, filename) {
+  var a = document.createElement("a");
+  a.href = dataurl;
+  a.setAttribute("download", filename);
+  a.click();
+  return false;
+}
+
 function bulkDownload() {
     const links = Array.from(document.getElementsByTagName("a"))
         //moodle adds by its own an hidden "Fichier" text inside <a> linking a file. it's convenient.
@@ -81,8 +89,15 @@ function bulkDownload() {
 
     for (let link of links) {
         if (allOfThem || link[1]) {
-            //the #BULK is to force download.
-            window.open(link[0].href+"#BULK", "_blank")
+            fetch(link[0].href).then(async res => {
+                let afterRedirectsUrl = res.url.split("/");
+                let filename = afterRedirectsUrl[afterRedirectsUrl.length-1].split("?")[0];
+                return {filename, blob: await res.blob()};
+            }).then(({filename, blob}) => {
+                console.log(filename, blob);
+                var file = window.URL.createObjectURL(blob);
+                download(file, filename)
+            });
         }
     }
 
