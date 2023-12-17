@@ -96,7 +96,6 @@ async function bulkDownload() {
         .filter(x => x.innerText.includes("Fichier") && x.className.includes("aalink"))
         //adding download state
         .map(x => [x, false]);
-    links[0][1] = true;
 
     let allOfThem = confirm("Do you want to download all of them ? ");
     
