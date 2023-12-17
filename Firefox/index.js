@@ -51,3 +51,16 @@ function runKeepAlive() {
             });
     }, 1 * 60 * 60 * 1000);
 }
+
+function addBulk() {
+    const container = document.getElementById("page-header").children[0].children[1];
+    //avoid adding multiple bulk buttons with web-ext hot reload.
+    if (container.children.length > 2) {
+        return;
+    }
+    const button = document.createElement("button");
+    button.innerText = "Bulk Download"
+    button.className = "btn  btn-primary"
+    container.appendChild(button)
+}
+addBulk();
