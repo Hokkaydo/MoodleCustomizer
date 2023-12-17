@@ -52,15 +52,58 @@ function runKeepAlive() {
     }, 1 * 60 * 60 * 1000);
 }
 
+function bulkDownload() {
+    const links = Array.from(document.getElementsByTagName("a"))
+        //moodle adds by its own an hidden "Fichier" text inside <a> linking a file. it's convenient.
+        .filter(x => x.innerText.includes("Fichier") && x.className.includes("aalink"))
+        //adding download state
+        .map(x => [x, false]);
+
+    let allOfThem = confirm("Do you want to download all of them ? ");
+    
+    //if we download of all of them, skip download popup
+    let currentItem = allOfThem ? links.length : 0;
+
+    //Utils functions
+    const stripName = (name) => name.replace("\nFichier","");
+    const getString = () => {
+        return "Download list: \n" + links.filter(x => x[1]).map(x => "    - " +stripName(x[0].innerText)).join("\n") + "\n"
+            +`Do you want to add ${stripName(links[currentItem][0].innerText)} to download list: `;
+    }
+    
+    //very basic popup to ask user which file to download. can be improved but it doesnt have to.
+    while (currentItem < links.length) {
+        if (confirm(getString())) {
+            links[currentItem][1] = true;
+        };
+        currentItem += 1;
+    }
+
+    for (let link of links) {
+        if (allOfThem || link[1]) {
+            //the #BULK is to force download.
+            window.open(link[0].href+"#BULK", "_blank")
+        }
+    }
+
+    
+
+    
+}
 function addBulk() {
+    if (!document.location.href.includes("course")) {
+        return;
+    }
     const container = document.getElementById("page-header").children[0].children[1];
     //avoid adding multiple bulk buttons with web-ext hot reload.
     if (container.children.length > 2) {
-        return;
+        container.removeChild(container.lastChild)
     }
     const button = document.createElement("button");
     button.innerText = "Bulk Download"
     button.className = "btn  btn-primary"
+    button.onclick = bulkDownload
     container.appendChild(button)
 }
 addBulk();
+ 
