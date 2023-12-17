@@ -60,13 +60,29 @@ function download(dataurl, filename) {
   return false;
 }
 
-function bulkDownload() {
-    const links = Array.from(document.getElementsByTagName("a"))
+async function bulkDownload() {
+    let links = Array.from(document.getElementsByTagName("a"))
         //moodle adds by its own an hidden "Fichier" text inside <a> linking a file. it's convenient.
         .filter(x => x.innerText.includes("Fichier") && x.className.includes("aalink"))
-        //adding download state
-        .map(x => [x, false]);
-
+   
+    let folders = Array.from(document.getElementsByTagName("a"))
+        //moodle adds by its own an hidden "Dossier" text inside <a> linking a folder. it's convenient.
+        .filter(x => x.innerText.includes("Dossier") && x.className.includes("aalink"))
+   
+     for (let folder of folders) {
+        console.log("fetching ", folder.innerText, folder.href)
+        let req = await fetch(folder.href);
+        let content = await req.text();
+        const parser = new DOMParser();
+        const htmlDoc = parser.parseFromString(content, 'text/html');
+        const folderLinks = Array.from(htmlDoc.getElementsByTagName("a"))
+            .filter(x => x.parentNode.className.includes("fp-filename-icon"))
+        for (let link of folderLinks) {
+            links.push(link)
+        }
+    }
+    //adding download state
+    links = links.map(x => [x, false]);
     let allOfThem = confirm("Do you want to download all of them ? ");
     
     //if we download of all of them, skip download popup
