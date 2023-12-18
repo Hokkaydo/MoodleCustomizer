@@ -61,13 +61,15 @@ function download(dataurl, filename) {
 }
 
 async function bulkDownload() {
+    await injectZIPJs()
+    console.log("injected")
     let links = Array.from(document.getElementsByTagName("a"))
         //moodle adds by its own an hidden "Fichier" text inside <a> linking a file. it's convenient.
-        .filter(x => x.innerText.includes("Fichier") && x.className.includes("aalink"))
+        .filter(x => x.innerText.includes("Fi") && x.className.includes("aalink"))
    
     let folders = Array.from(document.getElementsByTagName("a"))
         //moodle adds by its own an hidden "Dossier" text inside <a> linking a folder. it's convenient.
-        .filter(x => x.innerText.includes("Dossier") && x.className.includes("aalink"))
+        .filter(x => (x.innerText.includes("Dossier") || x.innerText.includes("Folder")) && x.className.includes("aalink"))
    
      for (let folder of folders) {
         console.log("fetching ", folder.innerText, folder.href)
@@ -102,20 +104,26 @@ async function bulkDownload() {
         };
         currentItem += 1;
     }
+    const zip = window.wrappedJSObject.zip;
+    const zipFileWriter = new zip.BlobWriter();
+    const zipWriter = new zip.ZipWriter(zipFileWriter);
 
     for (let link of links) {
         if (allOfThem || link[1]) {
-            fetch(link[0].href).then(async res => {
-                let afterRedirectsUrl = res.url.split("/");
-                let filename = afterRedirectsUrl[afterRedirectsUrl.length-1].split("?")[0];
-                return {filename, blob: await res.blob()};
-            }).then(({filename, blob}) => {
-                console.log(filename, blob);
-                var file = window.URL.createObjectURL(blob);
-                download(file, filename)
-            });
+            const res = await fetch(link[0].href);
+            let afterRedirectsUrl = res.url.split("/");
+            let filename = afterRedirectsUrl[afterRedirectsUrl.length-1].split("?")[0];
+            //yes, this code will re-do a fetch. i tried to use BobReader to avoid that, but i couldn't manage to make it work.
+            //i guess it's still some firefox issues. 
+            //but fetch will cache the result, so it's not necessary that bad.
+            await zipWriter.add(filename, new zip.HttpReader(link[0].href));
         }
     }
+    const blob = await zipWriter.close();
+    let url = URL.createObjectURL(blob);
+    const courseName = document.getElementsByClassName("page-header-headings")[0].innerText;
+    download(url, courseName+"-bulk.zip")
+
 
     
 
@@ -136,5 +144,15 @@ function addBulk() {
     button.onclick = bulkDownload
     container.appendChild(button)
 }
+
+//injecting using esm modules. Tried some other ways but it was the only working way..
+async function injectZIPJs() {
+    const script = document.createElement("script")
+    script.type = "module"
+    script.innerText = `
+        import {BlobWriter, TextWriter, ZipWriter, BlobReader, HttpReader} from "https://deno.land/x/zipjs/index.js"; window.zip = {HttpReader,BlobWriter, TextWriter, ZipWriter, BlobReader}`
+    document.head.appendChild(script)
+}
+
 addBulk();
  
